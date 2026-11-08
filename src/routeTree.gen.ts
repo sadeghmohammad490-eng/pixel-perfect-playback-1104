@@ -10,33 +10,193 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BooksRouteImport } from './routes/books'
+import { Route as CoursesRouteImport } from './routes/courses'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as MyCoursesRouteImport } from './routes/my-courses'
+import { Route as OnlineSessionsRouteImport } from './routes/online-sessions'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as StudentsRouteImport } from './routes/students'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as LegalPageRouteImport } from './routes/legal.$page'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BooksRoute = BooksRouteImport.update({
+  id: '/books',
+  path: '/books',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesRoute = CoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyCoursesRoute = MyCoursesRouteImport.update({
+  id: '/my-courses',
+  path: '/my-courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnlineSessionsRoute = OnlineSessionsRouteImport.update({
+  id: '/online-sessions',
+  path: '/online-sessions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentsRoute = StudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPageRoute = LegalPageRouteImport.update({
+  id: '/legal/$page',
+  path: '/legal/$page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/books': typeof BooksRoute
+  '/courses': typeof CoursesRoute
+  '/faq': typeof FaqRoute
+  '/my-courses': typeof MyCoursesRoute
+  '/online-sessions': typeof OnlineSessionsRoute
+  '/shop': typeof ShopRoute
+  '/students': typeof StudentsRoute
+  '/support': typeof SupportRoute
+  '/tools': typeof ToolsRoute
+  '/legal/$page': typeof LegalPageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/books': typeof BooksRoute
+  '/courses': typeof CoursesRoute
+  '/faq': typeof FaqRoute
+  '/my-courses': typeof MyCoursesRoute
+  '/online-sessions': typeof OnlineSessionsRoute
+  '/shop': typeof ShopRoute
+  '/students': typeof StudentsRoute
+  '/support': typeof SupportRoute
+  '/tools': typeof ToolsRoute
+  '/legal/$page': typeof LegalPageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/books': typeof BooksRoute
+  '/courses': typeof CoursesRoute
+  '/faq': typeof FaqRoute
+  '/my-courses': typeof MyCoursesRoute
+  '/online-sessions': typeof OnlineSessionsRoute
+  '/shop': typeof ShopRoute
+  '/students': typeof StudentsRoute
+  '/support': typeof SupportRoute
+  '/tools': typeof ToolsRoute
+  '/legal/$page': typeof LegalPageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/books'
+    | '/courses'
+    | '/faq'
+    | '/my-courses'
+    | '/online-sessions'
+    | '/shop'
+    | '/students'
+    | '/support'
+    | '/tools'
+    | '/legal/$page'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/books'
+    | '/courses'
+    | '/faq'
+    | '/my-courses'
+    | '/online-sessions'
+    | '/shop'
+    | '/students'
+    | '/support'
+    | '/tools'
+    | '/legal/$page'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/books'
+    | '/courses'
+    | '/faq'
+    | '/my-courses'
+    | '/online-sessions'
+    | '/shop'
+    | '/students'
+    | '/support'
+    | '/tools'
+    | '/legal/$page'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
+  BooksRoute: typeof BooksRoute
+  CoursesRoute: typeof CoursesRoute
+  FaqRoute: typeof FaqRoute
+  MyCoursesRoute: typeof MyCoursesRoute
+  OnlineSessionsRoute: typeof OnlineSessionsRoute
+  ShopRoute: typeof ShopRoute
+  StudentsRoute: typeof StudentsRoute
+  SupportRoute: typeof SupportRoute
+  ToolsRoute: typeof ToolsRoute
+  LegalPageRoute: typeof LegalPageRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +208,107 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/books': {
+      id: '/books'
+      path: '/books'
+      fullPath: '/books'
+      preLoaderRoute: typeof BooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses': {
+      id: '/courses'
+      path: '/courses'
+      fullPath: '/courses'
+      preLoaderRoute: typeof CoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-courses': {
+      id: '/my-courses'
+      path: '/my-courses'
+      fullPath: '/my-courses'
+      preLoaderRoute: typeof MyCoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/online-sessions': {
+      id: '/online-sessions'
+      path: '/online-sessions'
+      fullPath: '/online-sessions'
+      preLoaderRoute: typeof OnlineSessionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students': {
+      id: '/students'
+      path: '/students'
+      fullPath: '/students'
+      preLoaderRoute: typeof StudentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/$page': {
+      id: '/legal/$page'
+      path: '/legal/$page'
+      fullPath: '/legal/$page'
+      preLoaderRoute: typeof LegalPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
+  BooksRoute: BooksRoute,
+  CoursesRoute: CoursesRoute,
+  FaqRoute: FaqRoute,
+  MyCoursesRoute: MyCoursesRoute,
+  OnlineSessionsRoute: OnlineSessionsRoute,
+  ShopRoute: ShopRoute,
+  StudentsRoute: StudentsRoute,
+  SupportRoute: SupportRoute,
+  ToolsRoute: ToolsRoute,
+  LegalPageRoute: LegalPageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

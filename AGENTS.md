@@ -30,5 +30,6 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Presentation rules
+- Prebundle shared Radix controls at startup and reject outdated optimized-dependency requests; mixing cache generations can separate React hooks from the active renderer.
 - Keep responsive presentation in existing routes/shared site components and global semantic tokens; do not change business behavior for layout-only requests.
 - Mobile navigation must remain scrollable below the sticky header, close on navigation/Escape, and reset on desktop so every section stays reachable in landscape.

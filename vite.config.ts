@@ -10,6 +10,14 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  vite: {
+    optimizeDeps: {
+      // Prebundle the shared controls with React before the first page loads.
+      // Reject stale requests instead of mixing React instances across generations.
+      include: ["@radix-ui/react-slot", "@radix-ui/react-accordion"],
+      ignoreOutdatedRequests: false,
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

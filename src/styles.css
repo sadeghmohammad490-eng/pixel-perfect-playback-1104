@@ -63,13 +63,30 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     line-height: 1.9;
+    overflow-wrap: break-word;
+    letter-spacing: 0;
   }
+  img, video { max-width: 100%; }
+  main { min-width: 0; }
+  input, textarea, select { min-width: 0; }
+  a, button, input, textarea, select { touch-action: manipulation; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+}
+
+@media (max-width: 1023px) {
+  .site-footer li a { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; }
+  main > section.py-20 { padding-block: 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
 @utility text-gold-gradient {

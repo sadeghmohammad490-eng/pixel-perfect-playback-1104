@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Presentation rules
+- Keep responsive presentation in existing routes/shared site components and global semantic tokens; do not change business behavior for layout-only requests.
+- Mobile navigation must remain scrollable below the sticky header, close on navigation/Escape, and reset on desktop so every section stays reachable in landscape.

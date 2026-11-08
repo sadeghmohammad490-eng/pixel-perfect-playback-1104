@@ -5,9 +5,9 @@ import { sections } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-border bg-surface">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4">
-        <div className="space-y-4">
+    <footer className="site-footer mt-14 border-t border-border bg-surface lg:mt-24">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-10 lg:py-14">
+        <div className="min-w-0 space-y-4">
           <Logo />
           <p className="text-sm text-muted-foreground">آموزش تخصصی ترید، قیمت‌خوانی، مدیریت ریسک و روانشناسی معامله.</p>
           <div className="flex gap-3 text-muted-foreground">

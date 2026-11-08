@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { pageHead } from "@/lib/site";
 import { PageHeader, Container, btnOutline } from "@/components/site/Page";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 const cats = ["همه", "آموزش ترید", "دوره‌ها", "ابزارها", "مدیریت ریسک", "حساب کاربری", "سوالات عمومی"];
 const faqs = [
@@ -33,11 +34,11 @@ function Faq() {
         </div>
         <div className="mb-8 flex flex-wrap gap-2">
           {cats.map((c) => (
-            <button key={c} onClick={() => setCat(c)} className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${cat === c ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary"}`}>{c}</button>
+            <Button variant="ghost" aria-pressed={cat === c} key={c} onClick={() => setCat(c)} className={`h-auto min-h-11 rounded-full border px-4 py-1.5 text-sm font-normal transition-colors ${cat === c ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary"}`}>{c}</Button>
           ))}
         </div>
         {list.length ? (
-          <Accordion type="single" collapsible className="card-lux px-6">
+          <Accordion type="single" collapsible className="card-lux px-4 sm:px-6">
             {list.map((f) => (
               <AccordionItem key={f.q} value={f.q}>
                 <AccordionTrigger className="text-right">{f.q}</AccordionTrigger>
@@ -46,9 +47,9 @@ function Faq() {
             ))}
           </Accordion>
         ) : <p className="text-center text-muted-foreground">نتیجه‌ای یافت نشد.</p>}
-        <div className="card-lux mt-10 flex flex-col items-center justify-between gap-4 p-6 md:flex-row">
-          <div><h2 className="font-bold">سوال شما اینجا نیست؟</h2><p className="text-sm text-muted-foreground">برای ثبت سوال وارد حساب کاربری شوید. سوالات عمومی پس از تأیید منتشر می‌شوند.</p></div>
-          <Link to="/auth" className={btnOutline}>ثبت سوال</Link>
+        <div className="card-lux mt-10 grid grid-cols-1 items-center gap-4 p-5 sm:p-6 md:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="min-w-0"><h2 className="font-bold">سوال شما اینجا نیست؟</h2><p className="text-sm text-muted-foreground">برای ثبت سوال وارد حساب کاربری شوید. سوالات عمومی پس از تأیید منتشر می‌شوند.</p></div>
+          <Button asChild variant="outline" className={`h-auto ${btnOutline}`}><Link to="/auth">ثبت سوال</Link></Button>
         </div>
       </Container>
     </>

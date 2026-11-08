@@ -1,17 +1,13 @@
-// Temporary placeholder: replace with the official uploaded KHATIRTRADER logo file (unmodified).
-export function Logo({ size = 44 }: { size?: number }) {
+import logoAsset from "@/assets/khatirtrader-logo.jpg.asset.json";
+
+// Official KHATIRTRADER logo, shown unmodified.
+export function Logo({ size = 48 }: { size?: number }) {
   return (
-    <span className="flex items-center gap-3" aria-label="KHATIRTRADER">
-      <span
-        style={{ width: size, height: size }}
-        className="grid place-items-center rounded-full border border-dashed border-primary bg-background text-[9px] leading-tight text-primary text-center"
-        title="جای لوگوی رسمی — فایل اصلی بارگذاری نشده است"
-      >
-        لوگو
-      </span>
-      <span dir="ltr" className="text-lg font-extrabold tracking-widest text-gold-gradient">
-        KHATIRTRADER
-      </span>
-    </span>
+    <img
+      src={logoAsset.url}
+      alt="KHATIRTRADER"
+      style={{ height: size, width: "auto" }}
+      className="block"
+    />
   );
 }

@@ -84,6 +84,10 @@
   main > section.py-20 { padding-block: 3rem; }
 }
 
+@media print {
+  .book-stage { display: none !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }

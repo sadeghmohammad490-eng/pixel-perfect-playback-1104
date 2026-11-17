@@ -1,10 +1,9 @@
-import logoAsset from "@/assets/khatirtrader-logo.jpg.asset.json";
+import logo from "@/assets/khatirtrader-header-logo.png";
 
-// Official KHATIRTRADER logo, shown unmodified.
 export function Logo({ size = 48 }: { size?: number }) {
   return (
     <img
-      src={logoAsset.url}
+      src={logo}
       alt="KHATIRTRADER"
       style={{ height: size, width: "auto" }}
       className="block"

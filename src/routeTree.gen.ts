@@ -21,7 +21,9 @@ import { Route as ShopRouteImport } from './routes/shop'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as BooksBookIdRouteImport } from './routes/books_.$bookId'
 import { Route as LegalPageRouteImport } from './routes/legal.$page'
+import { Route as ApiLibraryBookIdRouteImport } from './routes/api/library/$bookId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -83,9 +85,19 @@ const ToolsRoute = ToolsRouteImport.update({
   path: '/tools',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BooksBookIdRoute = BooksBookIdRouteImport.update({
+  id: '/books_/$bookId',
+  path: '/books/$bookId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LegalPageRoute = LegalPageRouteImport.update({
   id: '/legal/$page',
   path: '/legal/$page',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLibraryBookIdRoute = ApiLibraryBookIdRouteImport.update({
+  id: '/api/library/$bookId',
+  path: '/api/library/$bookId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -102,7 +114,9 @@ export interface FileRoutesByFullPath {
   '/students': typeof StudentsRoute
   '/support': typeof SupportRoute
   '/tools': typeof ToolsRoute
+  '/books/$bookId': typeof BooksBookIdRoute
   '/legal/$page': typeof LegalPageRoute
+  '/api/library/$bookId': typeof ApiLibraryBookIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,7 +131,9 @@ export interface FileRoutesByTo {
   '/students': typeof StudentsRoute
   '/support': typeof SupportRoute
   '/tools': typeof ToolsRoute
+  '/books/$bookId': typeof BooksBookIdRoute
   '/legal/$page': typeof LegalPageRoute
+  '/api/library/$bookId': typeof ApiLibraryBookIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,7 +149,9 @@ export interface FileRoutesById {
   '/students': typeof StudentsRoute
   '/support': typeof SupportRoute
   '/tools': typeof ToolsRoute
+  '/books_/$bookId': typeof BooksBookIdRoute
   '/legal/$page': typeof LegalPageRoute
+  '/api/library/$bookId': typeof ApiLibraryBookIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,7 +168,9 @@ export interface FileRouteTypes {
     | '/students'
     | '/support'
     | '/tools'
+    | '/books/$bookId'
     | '/legal/$page'
+    | '/api/library/$bookId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -165,7 +185,9 @@ export interface FileRouteTypes {
     | '/students'
     | '/support'
     | '/tools'
+    | '/books/$bookId'
     | '/legal/$page'
+    | '/api/library/$bookId'
   id:
     | '__root__'
     | '/'
@@ -180,7 +202,9 @@ export interface FileRouteTypes {
     | '/students'
     | '/support'
     | '/tools'
+    | '/books_/$bookId'
     | '/legal/$page'
+    | '/api/library/$bookId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,7 +220,9 @@ export interface RootRouteChildren {
   StudentsRoute: typeof StudentsRoute
   SupportRoute: typeof SupportRoute
   ToolsRoute: typeof ToolsRoute
+  BooksBookIdRoute: typeof BooksBookIdRoute
   LegalPageRoute: typeof LegalPageRoute
+  ApiLibraryBookIdRoute: typeof ApiLibraryBookIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -285,11 +311,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/books_/$bookId': {
+      id: '/books_/$bookId'
+      path: '/books/$bookId'
+      fullPath: '/books/$bookId'
+      preLoaderRoute: typeof BooksBookIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/legal/$page': {
       id: '/legal/$page'
       path: '/legal/$page'
       fullPath: '/legal/$page'
       preLoaderRoute: typeof LegalPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/library/$bookId': {
+      id: '/api/library/$bookId'
+      path: '/api/library/$bookId'
+      fullPath: '/api/library/$bookId'
+      preLoaderRoute: typeof ApiLibraryBookIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -308,7 +348,9 @@ const rootRouteChildren: RootRouteChildren = {
   StudentsRoute: StudentsRoute,
   SupportRoute: SupportRoute,
   ToolsRoute: ToolsRoute,
+  BooksBookIdRoute: BooksBookIdRoute,
   LegalPageRoute: LegalPageRoute,
+  ApiLibraryBookIdRoute: ApiLibraryBookIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

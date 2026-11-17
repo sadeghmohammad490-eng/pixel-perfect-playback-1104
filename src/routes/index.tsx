@@ -18,7 +18,7 @@ function Index() {
         <img src={hero} alt="میز کار حرفه‌ای معامله‌گری با نمودارها" fetchPriority="high" width={1920} height={1088} className="absolute inset-0 -z-10 h-full w-full object-cover object-[35%_center] lg:object-center" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-l from-background via-background/85 to-background/30" />
         <div className="mx-auto flex min-h-[min(36rem,calc(100svh-8rem))] max-w-7xl flex-col justify-center px-4 py-10 sm:py-14 lg:min-h-[85vh] lg:py-24">
-          <p className="mb-5 text-sm font-medium tracking-wide text-primary animate-in fade-in slide-in-from-bottom-2 duration-700">آکادمی KHATIRTRADER</p>
+          <p dir="ltr" className="mb-5 text-right text-sm font-medium tracking-wide text-primary animate-in fade-in slide-in-from-bottom-2 duration-700">KHATIRTRADER Academy</p>
           <h1 className="max-w-3xl text-3xl font-extrabold leading-[1.5] sm:text-4xl lg:text-6xl lg:leading-[1.4] animate-in fade-in slide-in-from-bottom-4 duration-700">
             بازار را نمی‌توان کنترل کرد، <span className="text-gold-gradient">اما می‌توان معامله‌گری را آموخت.</span>
           </h1>

@@ -1,7 +1,7 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { pageHead } from "@/lib/site";
 import { getBook } from "@/lib/books";
-import { Container, btnOutline } from "@/components/site/Page";
+import { Container } from "@/components/site/Page";
 import { BookReader } from "@/components/site/BookReader";
 
 export const Route = createFileRoute("/books_/$bookId")({
@@ -20,11 +20,6 @@ function BookPage() {
   return (
     <Container>
       <BookReader bookId={book.id} />
-      <div className="mt-6">
-        <Link to="/books" className={btnOutline}>
-          بازگشت به کتابخانه
-        </Link>
-      </div>
     </Container>
   );
 }

@@ -84,6 +84,28 @@
   main > section.py-20 { padding-block: 3rem; }
 }
 
+.book-stage:fullscreen,
+.book-stage.is-expanded {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: #000;
+}
+.book-stage:fullscreen .book-tools,
+.book-stage.is-expanded .book-tools { display: none; }
+.book-stage:fullscreen .book-frame,
+.book-stage.is-expanded .book-frame {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  border-radius: 0;
+  background: #000;
+}
+
 @media print {
   .book-stage { display: none !important; }
 }

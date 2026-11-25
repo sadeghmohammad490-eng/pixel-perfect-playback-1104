@@ -1,13 +1,20 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { Link } from "@tanstack/react-router";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
 import { faNum } from "@/lib/books";
 
 const toolBtn =
   "inline-flex min-h-11 items-center justify-center rounded-lg border border-primary/50 px-3 text-sm text-primary transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40";
 
+const pageArrow =
+  "absolute z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-primary/80 bg-black/70 text-primary shadow-[0_0_16px_color-mix(in_oklab,var(--primary)_55%,transparent)] disabled:cursor-not-allowed disabled:opacity-30";
+
 export function BookReader({ bookId }: { bookId: string }) {
   const stageRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const swipeRef = useRef<{ x: number; y: number; id: number } | null>(null);
   const pdfRef = useRef<PDFDocumentProxy | null>(null);
   const renderTaskRef = useRef<RenderTask | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -15,10 +22,12 @@ export function BookReader({ bookId }: { bookId: string }) {
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(1);
   const [zoom, setZoom] = useState(1);
-  const [stageWidth, setStageWidth] = useState(0);
+  const [stageSize, setStageSize] = useState({ w: 0, h: 0 });
   const [pageDraft, setPageDraft] = useState("1");
   const [fullscreen, setFullscreen] = useState(false);
+  const [fillBrowser, setFillBrowser] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(false);
+  const expanded = fullscreen || fillBrowser;
 
   useEffect(() => {
     setPageDraft(String(page));
@@ -34,11 +43,25 @@ export function BookReader({ bookId }: { bookId: string }) {
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
-    const observer = new ResizeObserver(() => setStageWidth(stage.clientWidth));
+    const observer = new ResizeObserver(() => setStageSize({ w: stage.clientWidth, h: stage.clientHeight }));
     observer.observe(stage);
-    setStageWidth(stage.clientWidth);
+    setStageSize({ w: stage.clientWidth, h: stage.clientHeight });
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!fillBrowser) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFillBrowser(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [fillBrowser]);
 
   useEffect(() => {
     let cancelled = false;
@@ -97,7 +120,7 @@ export function BookReader({ bookId }: { bookId: string }) {
     const pdf = pdfRef.current;
     const canvas = canvasRef.current;
     const stage = stageRef.current;
-    if (status !== "ready" || !pdf || !canvas || !stage || stageWidth <= 0) return;
+    if (status !== "ready" || !pdf || !canvas || !stage || stageSize.w <= 0) return;
     const context = canvas.getContext("2d");
     if (!context) return;
 
@@ -111,7 +134,9 @@ export function BookReader({ bookId }: { bookId: string }) {
           return;
         }
         const base = pdfPage.getViewport({ scale: 1 });
-        const fit = Math.max(stage.clientWidth, 1) / base.width;
+        const availW = Math.max(stage.clientWidth, 1);
+        const availH = Math.max(stage.clientHeight, 1);
+        const fit = expanded ? Math.min(availW / base.width, availH / base.height) : availW / base.width;
         const viewport = pdfPage.getViewport({ scale: fit * zoom });
         const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = Math.floor(viewport.width * pixelRatio);
@@ -137,16 +162,67 @@ export function BookReader({ bookId }: { bookId: string }) {
       renderTaskRef.current?.cancel();
       renderTaskRef.current = null;
     };
-  }, [page, stageWidth, status, zoom]);
+  }, [expanded, page, stageSize.h, stageSize.w, status, zoom]);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+    const place = () => {
+      const rect = frame.getBoundingClientRect();
+      const top = Math.max(rect.top, 0);
+      const bottom = Math.min(rect.bottom, window.innerHeight);
+      if (bottom <= top) return;
+      frame.style.setProperty("--page-arrow-top", `${(top + bottom) / 2 - rect.top}px`);
+    };
+    place();
+    window.addEventListener("scroll", place, { passive: true });
+    window.addEventListener("resize", place);
+    frame.addEventListener("scroll", place, { passive: true });
+    const observer = new ResizeObserver(place);
+    observer.observe(frame);
+    return () => {
+      window.removeEventListener("scroll", place);
+      window.removeEventListener("resize", place);
+      frame.removeEventListener("scroll", place);
+      observer.disconnect();
+    };
+  }, [status, page, zoom]);
+
+  const busy = status !== "ready";
+
+  function turnPage(direction: -1 | 1) {
+    setPage((current) => Math.min(pageCount, Math.max(1, current + direction)));
+  }
+
+  function onPagePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
+    if ((event.target as HTMLElement).closest("button, input, a")) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    swipeRef.current = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  }
+
+  function onPagePointerUp(event: ReactPointerEvent<HTMLDivElement>) {
+    const start = swipeRef.current;
+    swipeRef.current = null;
+    if (!start || start.id !== event.pointerId || busy) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
+    turnPage(dx > 0 ? 1 : -1);
+  }
+
+  async function enterFullscreen(element: HTMLElement) {
+    if (document.fullscreenElement === element) {
+      await document.exitFullscreen();
+      return;
+    }
+    if (document.fullscreenElement) await document.exitFullscreen();
+    await element.requestFullscreen();
+  }
 
   async function toggleFullscreen() {
     const stage = stageRef.current;
     if (!stage) return;
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-      return;
-    }
-    await stage.requestFullscreen();
+    await enterFullscreen(stage);
   }
 
   function goToDraft(event: FormEvent) {
@@ -159,11 +235,27 @@ export function BookReader({ bookId }: { bookId: string }) {
     setPageDraft(String(target));
   }
 
-  const busy = status !== "ready";
-
   return (
-    <section id="reader" ref={stageRef} aria-label="نمایشگر کتاب" aria-busy={busy} className="book-stage card-lux scroll-mt-24 p-3 sm:p-5">
-      <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+    <section
+      id="reader"
+      ref={stageRef}
+      aria-label="نمایشگر کتاب"
+      aria-busy={busy}
+      className={`book-stage scroll-mt-24 ${expanded ? "is-expanded flex h-dvh w-full flex-col bg-black p-0" : "card-lux p-3 sm:p-5"} ${fillBrowser ? "fixed inset-0 z-[60]" : ""}`}
+    >
+      {expanded && (
+        <button
+          type="button"
+          className={`${toolBtn} absolute left-4 top-4 z-20 bg-black`}
+          onClick={() => {
+            if (fillBrowser) setFillBrowser(false);
+            else void toggleFullscreen();
+          }}
+        >
+          {fillBrowser ? "خروج از تمام‌صفحه مرورگر" : "خروج از تمام‌صفحه"}
+        </button>
+      )}
+      <div className="book-tools mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <p className="text-sm text-muted-foreground" aria-live="polite">
           {status === "loading" && "در حال آماده‌سازی کتاب"}
           {status === "error" && "نمایش کتاب ممکن نشد"}
@@ -187,10 +279,16 @@ export function BookReader({ bookId }: { bookId: string }) {
               {fullscreen ? "خروج از تمام‌صفحه" : "تمام‌صفحه"}
             </button>
           )}
+          <button type="button" className={toolBtn} onClick={() => setFillBrowser((current) => !current)}>
+            {fillBrowser ? "خروج از تمام‌صفحه مرورگر" : "تمام‌صفحه مرورگر"}
+          </button>
+          <Link to="/books" className={`${toolBtn} no-underline`}>
+            بازگشت به کتابخانه
+          </Link>
         </div>
       </div>
 
-      <form className="mb-4 flex flex-wrap items-center gap-2" onSubmit={goToDraft}>
+      <form className="book-tools mb-4 flex flex-wrap items-center gap-2" onSubmit={goToDraft}>
         <label htmlFor="book-page" className="text-sm text-muted-foreground">
           برو به صفحه
         </label>
@@ -208,7 +306,15 @@ export function BookReader({ bookId }: { bookId: string }) {
         </button>
       </form>
 
-      <div className="overflow-auto rounded-xl bg-white">
+      <div
+        ref={frameRef}
+        className={`book-frame relative touch-pan-y overflow-auto ${expanded ? "min-h-0 flex-1 bg-black" : "rounded-xl bg-white"}`}
+        onPointerDown={onPagePointerDown}
+        onPointerUp={onPagePointerUp}
+        onPointerCancel={() => {
+          swipeRef.current = null;
+        }}
+      >
         {status === "loading" && <p className="px-4 py-16 text-center text-sm text-neutral-600">در حال بارگذاری صفحات</p>}
         {status === "error" && (
           <div className="px-4 py-16 text-center">
@@ -218,7 +324,33 @@ export function BookReader({ bookId }: { bookId: string }) {
             </button>
           </div>
         )}
-        <canvas ref={canvasRef} className={status === "ready" ? "mx-auto block" : "hidden"} />
+        <div className={expanded ? "relative" : "contents"}>
+          <canvas ref={canvasRef} className={status === "ready" ? "mx-auto block" : "hidden"} />
+          {status === "ready" && (
+            <>
+              <button
+                type="button"
+                className={`${pageArrow} right-3`}
+                style={{ top: expanded ? "50%" : "var(--page-arrow-top, 50%)" }}
+                aria-label="صفحه قبل"
+                disabled={page <= 1}
+                onClick={() => turnPage(-1)}
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+              <button
+                type="button"
+                className={`${pageArrow} left-3`}
+                style={{ top: expanded ? "50%" : "var(--page-arrow-top, 50%)" }}
+                aria-label="صفحه بعد"
+                disabled={page >= pageCount}
+                onClick={() => turnPage(1)}
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </section>
   );

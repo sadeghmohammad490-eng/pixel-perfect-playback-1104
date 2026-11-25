@@ -29,14 +29,15 @@ export function Header() {
   }, [open]);
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur">
-      <div className="mx-auto grid h-18 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 lg:flex lg:justify-between">
-        <Link to="/" className="min-w-0 w-fit" aria-label="KHATIRTRADER — خانه"><Logo /></Link>
+      <div className="mx-auto grid h-18 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 lg:flex lg:justify-between">
+        <Link to="/" className="flex h-18 min-w-0 items-center" aria-label="KHATIRTRADER — خانه">
+          <Logo className="block h-18 w-auto max-w-full" />
+        </Link>
         <nav aria-label="ناوبری اصلی" className="hidden items-center gap-1 lg:flex">
           <NavLink to="/">خانه</NavLink>
-          <NavLink to="/about">درباره من</NavLink>
           {navGroups.map((g) => (
             <div key={g.label} className="group relative">
-              <Button variant="ghost" className="flex h-auto items-center gap-1 rounded-md px-3 py-2 text-sm font-normal text-muted-foreground transition-colors hover:text-primary">
+              <Button variant="ghost" className="flex h-auto items-center gap-1 rounded-md px-3 py-2 text-lg font-normal text-muted-foreground transition-colors hover:text-primary">
                 {g.label} <ChevronDown className="h-4 w-4" />
               </Button>
               <div className="invisible absolute right-0 top-full w-64 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
@@ -55,6 +56,7 @@ export function Header() {
             </div>
           ))}
           <NavLink to="/shop">خرید دوره‌ها</NavLink>
+          <NavLink to="/about">درباره آکادمی</NavLink>
         </nav>
         <div className="flex shrink-0 items-center gap-2">
           <Button asChild className="hidden h-auto rounded-lg bg-gold-gradient px-5 py-2 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5 sm:inline-flex">
@@ -71,12 +73,12 @@ export function Header() {
         <nav id="mobile-navigation" aria-label="ناوبری موبایل" className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto overscroll-contain border-t border-border bg-surface px-4 py-4 lg:hidden">
           <div className="grid gap-1">
             <Link to="/" onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-md p-2 hover:bg-accent">خانه</Link>
-            <Link to="/about" onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-md p-2 hover:bg-accent">درباره من</Link>
             {sections.map((s) => (
               <Link key={s.to} to={s.to} onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-2 rounded-md p-2 hover:bg-accent">
                 <s.icon className="h-4 w-4 shrink-0 text-primary" /> {s.title}
               </Link>
             ))}
+            <Link to="/about" onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-md p-2 hover:bg-accent">درباره آکادمی</Link>
             <Button asChild className="mt-2 h-auto min-h-11 rounded-lg bg-gold-gradient p-2 text-center font-bold text-primary-foreground"><Link to="/auth" onClick={() => setOpen(false)}>ورود / ثبت‌نام</Link></Button>
           </div>
         </nav>
@@ -90,7 +92,7 @@ function NavLink({ to, children }: { to: "/" | "/about" | "/shop"; children: Rea
     <Link
       to={to}
       activeOptions={{ exact: true }}
-      className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-primary data-[status=active]:text-primary"
+      className="rounded-md px-3 py-2 text-lg text-muted-foreground transition-colors hover:text-primary data-[status=active]:text-primary"
     >
       {children}
     </Link>
